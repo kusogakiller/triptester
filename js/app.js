@@ -13,7 +13,7 @@ const convert = function () {
         .map(meta => meta.line.substr(meta.start))
         .map(key => {
             const trip = Tripcode.convert(key, document.getElementById("appendRawKey").checked);
-            return trip ? "◆" + trip : "無効なトリップです。";
+            return trip ? "◆" + trip : "Invalid tripkey.";
         })
         .join("\n");
 
