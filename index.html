@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+    <meta name="referrer" content="no-referrer">
+    <meta name="description" content="人狼Onlineのトリップ変換をテストできます。">
+    <meta name="format-detection" content="telephone=no,address=no,email=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@nova_gt">
+    <meta property="og:title" content="トリップテスター">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:description" content="人狼Onlineのトリップ変換をテストできます。">
+    <title>Tripcode Tester</title>
+    <style>
+        :root {
+            --bg: #f6f7f9;
+            --card: #fff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Noto Sans JP", sans-serif;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 820px;
+            margin: auto;
+            padding: 60px 24px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 40px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .subtitle a {
+            color: var(--text);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .subtitle a:hover {
+            color: #000;
+        }
+
+        .section-title {
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            margin: 24px 0 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            font-family: "JetBrains Mono", "Consolas", monospace;
+            font-size: 14px;
+            letter-spacing: 0.02em;
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            resize: vertical;
+            color: var(--text);
+            transition: border-color .15s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #9ca3af;
+        }
+
+        textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-area .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        select, .btn {
+            padding: 10px 14px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            cursor: pointer;
+            transition: .15s;
+        }
+
+        .btn {
+            background: var(--text);
+            color: var(--card);
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: #000;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #f3f4f6;
+        }
+
+        .checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--muted);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--text);
+            cursor: pointer;
+        }
+
+        .card {
+            margin-top: 0;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .output-header small {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        pre {
+            margin: 0;
+            padding: 14px;
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: auto;
+            word-break: break-all;
+            font-family: "JetBrains Mono", "Consolas", monospace;
+            font-size: 14px;
+            letter-spacing: 0.02em;
+            line-height: 1.7;
+            min-height: 60px;
+            color: var(--text);
+        }
+
+        footer {
+            margin-top: 28px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        footer a {
+            color: var(--text);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        footer a:hover {
+            color: #000;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 32px 16px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .controls {
+                padding: 10px;
+            }
+        }
+    </style>
+    <script src="js/vendor/ecl.min.js"></script>
+    <script src="js/vendor/des.min.js"></script>
+    <script src="js/vendor/sha1.min.js"></script>
+    <script src="js/tripcode.js/tripcode.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Tripcode Tester</h1>
+        <div class="subtitle">
+            <a href="https://zinro.net/" target="_blank" rel="noopener noreferrer">人狼Online</a>のトリップ変換をテストできます。
+        </div>
+
+        <div class="section-title">Configuration</div>
+
+        <div class="controls">
+            <div class="input-area" style="flex:1">
+                <textarea id="tripkeys" rows="4">#password</textarea>
+                <div class="row">
+                    <button class="btn" type="button" id="convertBtn">Convert</button>
+                    <button class="btn btn-secondary" type="button" id="clearBtn">Clear</button>
+                    <label class="checkbox-label">
+                        <input id="appendRawKey" type="checkbox"> 生キー付加
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Output</div>
+
+        <div class="card">
+            <div class="output-header">
+                <small>Generated Tripcodes</small>
+                <button class="btn btn-secondary" id="copy" style="display:none;padding:6px 12px;font-size:12px;">Copy</button>
+            </div>
+            <pre id="tripcodes">No output yet.</pre>
+        </div>
+
+        <footer>
+            Created by @ねぎら◆BBBBBBBBB.
+        </footer>
+    </div>
+</body>
+</html>
